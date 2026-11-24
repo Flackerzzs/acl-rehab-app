@@ -96,3 +96,13 @@ This release contains a future Running training mode (default Not cleared) and t
 - Added automatic Dark Mode support using the device/browser `prefers-color-scheme` setting. The app follows the iPhone's system appearance rather than adding a separate in-app theme switch.
 - Added dark variants for cards, forms, inputs, selectors, navigation, exercise illustrations, tags, charts and session records.
 - Updated the web app manifest and service-worker cache version for the dark appearance.
+
+
+## Version 15 – Flackys ACL Rehab dashboard and mobile fixes
+
+- Renamed the app to Flackys ACL Rehab in the page title and web app manifest.
+- Fixed the weekly-plan training session picker: dark background, constrained form controls, two-column layout on wider phones and single-column layout on narrow phones; buttons and inputs stay within the card.
+- Reworked the bottom navigation to an eight-column inline grid so all tabs fit the phone width without horizontal overflow.
+- Added a surgery-date-based recovery day/week counter and a broad educational graft-remodelling phase card on the home page.
+- Added a graft anatomy illustration and a collapsible explanation with clinical-source links. The phase is an educational estimate only and is not a measurement of graft strength or readiness.
+- Added individual exercise thumbnails to the Speediance exercise register, using generated upper-body illustrations and existing movement reference illustrations for lower-body movements.
