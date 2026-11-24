@@ -88,3 +88,11 @@ This release contains a future Running training mode (default Not cleared) and t
 - Added compact session summary metrics and progressive disclosure: detailed fields are tucked into expandable sections.
 - Refined typography, spacing, cards, form controls, page headings and bottom navigation for phone screens. The bottom navigation can scroll horizontally where all tabs do not fit.
 - Simplified repeated explanatory copy while retaining key clinical safety messages and backup guidance.
+
+
+## Version 14 – Dark appearance and exercise navigation icon
+
+- Replaced the Exercises bottom-navigation plus symbol with a custom kettlebell SVG, keeping the Physio symbol distinct.
+- Added automatic Dark Mode support using the device/browser `prefers-color-scheme` setting. The app follows the iPhone's system appearance rather than adding a separate in-app theme switch.
+- Added dark variants for cards, forms, inputs, selectors, navigation, exercise illustrations, tags, charts and session records.
+- Updated the web app manifest and service-worker cache version for the dark appearance.
