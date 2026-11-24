@@ -116,3 +116,12 @@ This release contains a future Running training mode (default Not cleared) and t
 - Added a personal recovery-milestones checklist to the home page. Milestones can be added, completed and removed; this is a personal record, not an automatic clinical clearance system.
 - Improved dark-mode form and card styling, including nested exercise settings, to prevent white panels, overflow and overlapping controls on narrow screens.
 - Speediance custom entries and edits are persisted in the local app backup.
+
+
+## Version 17 – Block-first weekly planner
+
+- Generate Week now supports whole physio block sessions. Choose Blocks 1–4 and set sessions per week; only exercises individually marked Approved in the selected block are included. The block exercises are kept together on the same day. Block 4 remains explicitly gated by clinical approval.
+- Manual day planning now starts with block/category cards, then shows only the exercises within the selected block. Includes a search field within the chosen block.
+- Saving a block selection adds/removes only that block's exercises for the selected day and preserves exercises from other blocks and training sessions.
+- Existing individual exercise auto-planning and cleared cross-training settings remain available.
+- Existing browser data is retained; the new block planner settings are saved locally and included in the app's JSON backup.
