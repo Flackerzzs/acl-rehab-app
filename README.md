@@ -106,3 +106,13 @@ This release contains a future Running training mode (default Not cleared) and t
 - Added a surgery-date-based recovery day/week counter and a broad educational graft-remodelling phase card on the home page.
 - Added a graft anatomy illustration and a collapsible explanation with clinical-source links. The phase is an educational estimate only and is not a measurement of graft strength or readiness.
 - Added individual exercise thumbnails to the Speediance exercise register, using generated upper-body illustrations and existing movement reference illustrations for lower-body movements.
+
+
+## Version 16 – Editable hydrotherapy and Speediance libraries
+
+- Added an Add Hydrotherapy Exercise control. Hydrotherapy exercises can now be edited, have their own image replaced, and custom-added entries can be deleted.
+- Added Add Speediance Exercise. Speediance entries can be edited, assigned to a category, given a replacement image, and custom-added entries can be deleted.
+- Speediance lower-body illustrations that were not reliably matched to the movement have been removed. They now show a neutral reference placeholder until a correct image is uploaded. Upper-body images remain attached to their matching entries.
+- Added a personal recovery-milestones checklist to the home page. Milestones can be added, completed and removed; this is a personal record, not an automatic clinical clearance system.
+- Improved dark-mode form and card styling, including nested exercise settings, to prevent white panels, overflow and overlapping controls on narrow screens.
+- Speediance custom entries and edits are persisted in the local app backup.
