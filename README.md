@@ -3,7 +3,7 @@
 A free, mobile-first web app built from `ACL_Rehabilitation_Weekly_Tracker.xlsx`. It is designed for one person and stores data locally in the browser on the device where it is used. No account, database or cloud sync is included.
 
 ## Included
-- Original 33 exercises from the four spreadsheet blocks, with additional optional library suggestions in each block.
+- Expanded exercise library across four blocks, with block tabs so you can browse one block at a time.
 - Clinical-style movement schematics on exercise cards (simple visual cues, not technique instruction).
 - Approval status for each exercise: Not yet approved, Approved or Retired. New and existing items default to Not yet approved.
 - Editable physio-prescribed sets, reps, holds, resistance, side instructions and notes; dosage fields remain blank until entered.
