@@ -1,4 +1,4 @@
-const $=id=>document.getElementById(id);let catalog=[],libraryBlock=0,state={prescriptions:{},plan:{},completed:{},symptoms:[],videos:{},notes:{},approvals:{},customIds:[],exerciseSettings:{},planSessions:{},clinical:{},clinicalNotes:"",clinicalReviewDate:"",clinicalStage:"",trainingConfig:{},trainingLogs:[],trainingPlan:{},trainingDone:{},goal:{year:2028,event:""},clinicalProfile:{surgeryDate:"",graftType:"",restrictions:"",milestone:""},planPreferences:{restDays:[]},hydroLogs:[]},weekOffset=0,selectedDay=new Date().getDay();
+const $=id=>document.getElementById(id);let catalog=[],libraryBlock=0,state={prescriptions:{},plan:{},completed:{},symptoms:[],videos:{},notes:{},approvals:{},customIds:[],exerciseSettings:{},planSessions:{},clinical:{},clinicalNotes:"",clinicalReviewDate:"",clinicalStage:"",trainingConfig:{},trainingLogs:[],trainingPlan:{},trainingDone:{},goal:{year:2028,event:""},clinicalProfile:{surgeryDate:"",graftType:"",restrictions:"",milestone:""},planPreferences:{restDays:[]},hydroLogs:[],physioVisits:[]},weekOffset=0,selectedDay=new Date().getDay();
 const todayKey=()=>dateKey(new Date()),dateKey=d=>{let x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`},monday=d=>{let x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x},weekStart=()=>{let x=monday(new Date());x.setDate(x.getDate()+weekOffset*7);return x},weekDays=()=>Array.from({length:7},(_,i)=>{let d=weekStart();d.setDate(d.getDate()+i);return d}),dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 const speedianceExercises=[
@@ -31,9 +31,9 @@ function openImageDB(){return new Promise((resolve,reject)=>{if(!("indexedDB" in
 async function saveImagesToDB(images){try{let db=await openImageDB();await new Promise((resolve,reject)=>{let tx=db.transaction(IMAGE_STORE,"readwrite"),store=tx.objectStore(IMAGE_STORE);store.clear();Object.entries(images||{}).forEach(([k,v])=>store.put(v,k));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});db.close()}catch(e){/* fallback remains in local storage if IndexedDB is unavailable */}}
 async function loadImagesFromDB(){try{let db=await openImageDB(),out=await new Promise((resolve,reject)=>{let tx=db.transaction(IMAGE_STORE,"readonly"),req=tx.objectStore(IMAGE_STORE).getAllKeys(),items={};req.onsuccess=()=>{let keys=req.result;if(!keys.length){resolve(items);return}let store=tx.objectStore(IMAGE_STORE),left=keys.length;keys.forEach(k=>{let q=store.get(k);q.onsuccess=()=>{items[k]=q.result;if(!--left)resolve(items)};q.onerror=()=>reject(q.error)})};req.onerror=()=>reject(req.error)});db.close();return out}catch(e){return {}}}
 async function hydrateExerciseImages(){let legacy=state.exerciseImages||{};if(Object.keys(legacy).length)await saveImagesToDB(legacy);let stored=await loadImagesFromDB();state.exerciseImages={...legacy,...stored}}
-async function init(){let baseCatalog=await fetch("exercises.json").then(r=>r.json());catalog=baseCatalog;try{let s=JSON.parse(localStorage.getItem("acl-rehab-v1")||"{}");state={...state,...(s.state||s)};if(Array.isArray(s.catalog)){catalog=baseCatalog.map((b,bi)=>{let old=s.catalog[bi];if(!old)return b;let exercises=(old[2]||[]).slice();(b[2]||[]).forEach((e,ei)=>{if(exercises[ei]===undefined)exercises[ei]=e});return [b[0],b[1],exercises,b[3]||bi+1]});s.catalog.slice(baseCatalog.length).forEach(b=>catalog.push(b));}}catch(e){};state.approvals=state.approvals||{};state.exerciseSettings=state.exerciseSettings||{};state.planSessions=state.planSessions||{};state.clinical=state.clinical||{};state.trainingConfig=state.trainingConfig||{};state.trainingLogs=state.trainingLogs||[];state.trainingPlan=state.trainingPlan||{};state.trainingDone=state.trainingDone||{};state.goal=state.goal||{year:2028,event:""};state.clinicalProfile=state.clinicalProfile||{};state.planPreferences=state.planPreferences||{restDays:[]};state.hydroLogs=state.hydroLogs||[];state.speedianceReview=state.speedianceReview||{};await hydrateExerciseImages();$("symDate").value=todayKey();$("logDate").value=todayKey();$("todayDate").textContent=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short"});renderAll();renderPhysio();renderTraining();document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));}
+async function init(){let baseCatalog=await fetch("exercises.json").then(r=>r.json());catalog=baseCatalog;try{let s=JSON.parse(localStorage.getItem("acl-rehab-v1")||"{}");state={...state,...(s.state||s)};if(Array.isArray(s.catalog)){catalog=baseCatalog.map((b,bi)=>{let old=s.catalog[bi];if(!old)return b;let exercises=(old[2]||[]).slice();(b[2]||[]).forEach((e,ei)=>{if(exercises[ei]===undefined)exercises[ei]=e});return [b[0],b[1],exercises,b[3]||bi+1]});s.catalog.slice(baseCatalog.length).forEach(b=>catalog.push(b));}}catch(e){};state.approvals=state.approvals||{};state.exerciseSettings=state.exerciseSettings||{};state.planSessions=state.planSessions||{};state.clinical=state.clinical||{};state.trainingConfig=state.trainingConfig||{};state.trainingLogs=state.trainingLogs||[];state.trainingPlan=state.trainingPlan||{};state.trainingDone=state.trainingDone||{};state.goal=state.goal||{year:2028,event:""};state.clinicalProfile=state.clinicalProfile||{};state.planPreferences=state.planPreferences||{restDays:[]};state.hydroLogs=state.hydroLogs||[];state.physioVisits=state.physioVisits||[];state.speedianceReview=state.speedianceReview||{};await hydrateExerciseImages();$("symDate").value=todayKey();$("logDate").value=todayKey();$("visitDate").value=todayKey();$("todayDate").textContent=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short"});renderAll();renderPhysio();renderTraining();document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));}
 function save(){let snapshot={...state};delete snapshot.exerciseImages;localStorage.setItem("acl-rehab-v1",JSON.stringify({state:snapshot,catalog}));if(state.exerciseImages)saveImagesToDB(state.exerciseImages);}
-function showTab(t){document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===t));document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));if(t==="plan")renderPlan();if(t==="progress")renderProgress();if(t==="physio")renderPhysio();if(t==="training")renderTraining();if(t==="hydro")renderHydro();window.scrollTo(0,0)}
+function showTab(t){document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===t));document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));if(t==="plan")renderPlan();if(t==="progress")renderProgress();if(t==="physio")renderPhysio();if(t==="training")renderTraining();if(t==="hydro")renderHydro();if(t==="visits")renderVisits();window.scrollTo(0,0)}
 function idOf(b,e){return b+"::"+e}
 function getRx(b,e){return state.prescriptions[idOf(b,e)]||{sets:"",reps:"",hold:"",resistance:"",side:"",notes:""}}
 function exerciseName(b,e){let id=idOf(b,e);return (state.exerciseDetails&&state.exerciseDetails[id]&&state.exerciseDetails[id].name)||catalog[b][2][e]?.[0]||"Deleted exercise"}
@@ -42,7 +42,7 @@ function exerciseImage(id,defaultSrc){return (state.exerciseImages&&state.exerci
 
 function planned(key){return state.plan[key]||[]}
 function completed(key,id){return !!(state.completed[key]||{})[id]}
-function renderAll(){renderHome();renderPlan();renderLibrary();renderProgress();renderPhysio();renderTraining();renderHydro()}
+function renderAll(){renderHome();renderPlan();renderLibrary();renderProgress();renderPhysio();renderTraining();renderHydro();renderVisits()}
 function renderHome(){let k=todayKey(),list=planned(k),done=list.filter(id=>completed(k,id)).length;$("todayCount").textContent=`${done} / ${list.length}`;$("todayBar").style.width=(list.length?done/list.length*100:0)+"%";$("todayHint").textContent=list.length?(done===list.length?"Today's selected work is complete.":`${list.length-done} selected exercise(s) remaining.`):"No exercises planned yet. Choose today's exercises in Weekly plan.";let dates=Array.from({length:7},(_,i)=>{let d=new Date();d.setDate(d.getDate()-i);return dateKey(d)}),total=dates.reduce((a,k)=>a+planned(k).length,0),finished=dates.reduce((a,k)=>a+planned(k).filter(id=>completed(k,id)).length,0);$("weekRate").textContent=(total?Math.round(finished/total*100):0)+"%";let s=state.symptoms.find(x=>x.date===k);$("painMetric").textContent=s?.pain!==""&&s?.pain!=null?s.pain:"—";$("swellingMetric").textContent=s?.swelling||"—";$("sessionsMetric").textContent=Object.values(state.completed).reduce((n,o)=>n+Object.values(o).filter(Boolean).length,0)+(state.trainingLogs||[]).length}
 function renderPlan(){
  let ds=weekDays(),first=ds[0],last=ds[6];
@@ -131,6 +131,56 @@ function renderPhysio(){
  let approved=Object.values(state.approvals||{}).filter(v=>v==="Approved").length; $("physioSummary").innerHTML=`<div class="small muted" style="margin-bottom:10px">${approved} exercises currently marked approved · ${rows.length} library entries to review</div>`+rows.join("");
 }
 function setClinical(id,key,val){state.clinical[id]=state.clinical[id]||{};state.clinical[id][key]=val;save()}
+const visitFields=["visitDate","visitClinician","visitType","visitNextDate","visitFocus","visitAssessment","visitTreatment","visitExerciseChanges","visitHomePlan","visitRestrictions","visitGoals","visitQuestions","visitNotes"];
+const visitKeys=["date","clinician","type","nextDate","focus","assessment","treatment","exerciseChanges","homePlan","restrictions","goals","questions","notes"];
+function resetVisitForm(){
+ $("visitEditId").value="";visitFields.forEach((id,i)=>$(id).value=i===0?todayKey():i===2?"Physiotherapy":"");
+ $("visitFormTitle").textContent="Record a session";$("cancelVisitEdit").classList.add("hidden");
+ document.querySelectorAll("#visits .visit-detail").forEach(d=>d.open=false);
+}
+function saveVisit(){
+ let date=$("visitDate").value||todayKey(),focus=$("visitFocus").value.trim();
+ if(!focus){alert("Add the main focus of the session before saving.");$("visitFocus").focus();return}
+ let id=$("visitEditId").value||("visit-"+Date.now()),entry={id};
+ visitFields.forEach((field,i)=>entry[visitKeys[i]]=$(field).value.trim());
+ entry.date=date;entry.updatedAt=new Date().toISOString();
+ state.physioVisits=state.physioVisits||[];
+ let index=state.physioVisits.findIndex(x=>x.id===id);
+ if(index>=0)state.physioVisits[index]=entry;else state.physioVisits.push(entry);
+ state.physioVisits.sort((a,b)=>b.date.localeCompare(a.date));
+ save();resetVisitForm();renderVisits();alert("Physio session saved.");
+}
+function editVisit(id){
+ let entry=(state.physioVisits||[]).find(x=>x.id===id);if(!entry)return;
+ visitFields.forEach((field,i)=>$(field).value=entry[visitKeys[i]]||"");
+ $("visitEditId").value=id;$("visitFormTitle").textContent="Edit session";$("cancelVisitEdit").classList.remove("hidden");
+ document.querySelectorAll("#visits .visit-detail").forEach(d=>d.open=true);
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function deleteVisit(id){
+ if(!confirm("Delete this physio session? This cannot be undone."))return;
+ state.physioVisits=(state.physioVisits||[]).filter(x=>x.id!==id);save();renderVisits();
+}
+function printVisits(){
+ let visits=(state.physioVisits||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+ if(!visits.length){alert("There are no physio sessions to print yet.");return}
+ let rows=visits.map(v=>{let fields=[["Main focus",v.focus],["Assessment",v.assessment],["Treatment",v.treatment],["Exercise changes",v.exerciseChanges],["Home programme",v.homePlan],["Restrictions",v.restrictions],["Goals",v.goals],["Questions",v.questions],["Personal notes",v.notes]].filter(x=>x[1]);return `<article><h2>${esc(v.date||"Undated")} · ${esc(v.type||"Session")}</h2><p>${esc(v.clinician||"")} ${v.nextDate?" · Next appointment: "+esc(v.nextDate):""}</p>${fields.map(([k,val])=>`<h3>${esc(k)}</h3><p>${esc(val).replace(/\\n/g,"<br>")}</p>`).join("")}</article>`}).join("");
+ let w=window.open("","_blank");if(!w){alert("Allow pop-ups to print the session history.");return}
+ w.document.write(`<!doctype html><html><head><meta name="viewport" content="width=device-width"><title>Physio session history</title><style>body{font:14px -apple-system,Arial,sans-serif;color:#172638;max-width:850px;margin:30px auto;padding:0 20px;line-height:1.5}h1{font-size:24px}h2{font-size:17px;border-bottom:1px solid #ddd;padding-bottom:6px}h3{font-size:11px;text-transform:uppercase;color:#667;margin:14px 0 3px}p{margin:3px 0 8px;white-space:pre-wrap}article{break-inside:avoid;border-bottom:1px solid #ddd;padding:10px 0 18px}@media print{button{display:none}}</style></head><body><h1>ACL Rehab · Physio session history</h1><p>Printed ${new Date().toLocaleDateString("en-GB")}</p>${rows}<script>window.onload=()=>window.print()<\\/script></body></html>`);w.document.close();
+}
+function renderVisits(){
+ if(!$("visitHistory"))return;
+ let visits=(state.physioVisits||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+ let upcoming=visits.filter(v=>v.nextDate&&v.nextDate>=todayKey()).sort((a,b)=>a.nextDate.localeCompare(b.nextDate))[0];
+ $("visitSummary").innerHTML=`<div class="visit-stat"><strong>${visits.length}</strong><span>Sessions recorded</span></div><div class="visit-stat"><strong>${visits.length?new Date(visits[0].date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"}):"—"}</strong><span>Last appointment</span></div><div class="visit-stat"><strong>${upcoming?new Date(upcoming.nextDate+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"}):"—"}</strong><span>Next appointment</span></div>`;
+ $("visitCount").textContent=visits.length?`${visits.length} saved`:"No entries yet";
+ $("visitHistory").innerHTML=visits.length?visits.map(v=>{
+  let date=v.date?new Date(v.date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):"Date not set";
+  let meta=[v.type,v.clinician].filter(Boolean).join(" · ");
+  let rows=[["Main focus",v.focus],["Assessment",v.assessment],["Treatment",v.treatment],["Exercise changes",v.exerciseChanges],["Home programme",v.homePlan],["Restrictions",v.restrictions],["Goals",v.goals],["Questions",v.questions],["Personal notes",v.notes]].filter(x=>x[1]);
+  return `<article class="visit-entry"><div class="row"><h4>${esc(date)}</h4><span class="pill">${esc(v.type||"Session")}</span></div><div class="visit-meta">${esc(meta)}${v.nextDate?" · Next: "+esc(new Date(v.nextDate+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"})):""}</div><dl>${rows.map(([k,val])=>`<div><dt>${esc(k)}</dt><dd>${esc(val)}</dd></div>`).join("")}</dl><div class="visit-entry-actions"><button class="btn secondary" onclick="editVisit('${escAttr(v.id)}')">Edit</button><button class="btn danger" onclick="deleteVisit('${escAttr(v.id)}')">Delete</button></div></article>`;
+ }).join(""):`<div class="card empty"><b>No physio sessions recorded yet</b><p class="small">After your next appointment, add the key findings, programme changes and next steps here.</p></div>`;
+}
 function renderHydro(){
  let bIndex=catalog.findIndex((b,i)=>(b[3]||i+1)===7),b=catalog[bIndex];
  if(!b){$("hydroLibrary").innerHTML="<p>Hydrotherapy library not found.</p>";return}

@@ -78,3 +78,13 @@ The live GitHub repository was missing the requested image files: direct checks 
 ## Version 12 – Running and Speediance exercise library refinement
 
 This release contains a future Running training mode (default Not cleared) and the user's 23 previously recorded Speediance exercises across Upper, Rehab Lower 1 and Rehab Lower 2. Historical loads and rep schemes are retained for discussion only. The unidentified 10 kg unilateral movement in Rehab Lower 2 remains explicitly flagged for the user/physio to identify. The printable physio review report includes these entries.
+
+
+## Version 13 – Physio session journal and interface refinement
+
+- Added a dedicated Physio Sessions page with date, clinician, appointment type, next appointment, focus, observations, treatment, exercise changes, home programme, restrictions, goals, questions and personal notes.
+- Sessions can be edited, deleted, viewed chronologically, and printed as a session-history report.
+- Visit records are stored in the existing local app state and included in JSON backup/restore.
+- Added compact session summary metrics and progressive disclosure: detailed fields are tucked into expandable sections.
+- Refined typography, spacing, cards, form controls, page headings and bottom navigation for phone screens. The bottom navigation can scroll horizontally where all tabs do not fit.
+- Simplified repeated explanatory copy while retaining key clinical safety messages and backup guidance.
