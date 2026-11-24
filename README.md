@@ -57,3 +57,24 @@ Hydrotherapy is an optional adjunct to land-based ACL rehabilitation. The pool i
 ## Version 9 – Hydrotherapy as a separate recovery area
 
 Hydrotherapy is no longer shown as an exercise-library block or included in the weekly auto-planner. It has a dedicated Hydrotherapy & Recovery tab with its own approval and prescription fields, session date/duration/notes logging, and session history. It is treated as occasional optional recovery work rather than a weekly target. The exercise entries remain part of the shared clinical data and can be reviewed in the Hydrotherapy section.
+
+
+## Version 10 – Stretching and hydrotherapy image repair
+
+The live GitHub repository was missing the requested image files: direct checks of `assets/block5-01.jpg` and `assets/hydro-01.jpg` on the published repository returned 404. This release includes the complete assets folder plus explicit `stretch-01.jpg`…`stretch-07.jpg` and `hydrotherapy-01.jpg`…`hydrotherapy-08.jpg` files. The app references these explicit names and pre-caches them in a newly versioned service worker. If an image still fails to load, a visible movement-reference fallback is shown instead of a broken-image icon.
+
+**Important upload instruction:** upload the complete `assets` folder from this ZIP, not only the files at the top level. On GitHub, use Add file → Upload files and drag the `assets` folder itself (containing all image files) into the upload area. Commit the update.
+
+
+## Version 11 – Running and Speediance physio register
+
+- Added Running as a future training mode with session type, duration, weekly frequency, effort ceiling, clearance gate, and clinician-entered return-to-run criteria. It defaults to Not cleared and is excluded from automatic weekly planning unless explicit clearance and frequency are entered.
+- Added 23 previously recorded Speediance exercises across Upper, Rehab Lower 1 and Rehab Lower 2, including historical loads, sets and reps where available. Each entry can be edited and marked To review / Approved / Modify / Avoid with physio notes.
+- One Rehab Lower 2 unilateral exercise was cropped/unidentified in the original record; it is deliberately labelled for confirmation rather than guessed.
+- The printable physio review sheet now includes the Speediance exercise register.
+- Running is a planning/logging placeholder only. The app does not determine when running is safe or prescribe return-to-run progression.
+
+
+## Version 12 – Running and Speediance exercise library refinement
+
+This release contains a future Running training mode (default Not cleared) and the user's 23 previously recorded Speediance exercises across Upper, Rehab Lower 1 and Rehab Lower 2. Historical loads and rep schemes are retained for discussion only. The unidentified 10 kg unilateral movement in Rehab Lower 2 remains explicitly flagged for the user/physio to identify. The printable physio review report includes these entries.
